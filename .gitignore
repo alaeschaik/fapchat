@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/java,code-java,windows,linux,macos,intellij,intellij+all,intellij+iml
-# Edit at https://www.toptal.com/developers/gitignore?templates=java,code-java,windows,linux,macos,intellij,intellij+all,intellij+iml
+# Created by https://www.toptal.com/developers/gitignore/api/java,linux,macos,windows,intellij,code-java,intellij+all,intellij+iml,gradle
+# Edit at https://www.toptal.com/developers/gitignore?templates=java,linux,macos,windows,intellij,code-java,intellij+all,intellij+iml,gradle
 
 ### Code-Java ###
 # Language Support for Java(TM) by Red Hat extension for Visual Studio Code - https://marketplace.visualstudio.com/items?itemName=redhat.java
@@ -317,4 +317,23 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/java,code-java,windows,linux,macos,intellij,intellij+all,intellij+iml
+### Gradle ###
+.gradle
+build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+### Gradle Patch ###
+**/build/
+
+# End of https://www.toptal.com/developers/gitignore/api/java,linux,macos,windows,intellij,code-java,intellij+all,intellij+iml,gradle
