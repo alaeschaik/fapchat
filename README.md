@@ -1,4 +1,4 @@
-https://travis-ci.com/alaeschaik/fapchat.svg?token=z4x2JNRsy16jHhXzAqhv&branch=master
+[![Build Status](https://travis-ci.com/alaeschaik/fapchat.svg?token=z4x2JNRsy16jHhXzAqhv&branch=master)](https://travis-ci.com/alaeschaik/fapchat)
 # fapchat
 A simple chat tool.
 ## Gradle
