@@ -26,7 +26,7 @@
       <Text layoutX="14.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maximal size: 110 x 110 px"/>
       <Text layoutX="14.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:"/>
       <TextField fx:id="changeUsernameTextField" layoutX="84.0" layoutY="219.0" prefHeight="25.0" prefWidth="289.0"/>
-      <Button fx:id="applyButton" layoutX="334.0" layoutY="561.0" mnemonicParsing="false" text="Apply" onMouseClicked="#onAppyButtonClicked"/>
-      <Button layoutX="16.0" layoutY="561.0" mnemonicParsing="false" text="Close"/>
+      <Button fx:id="applyButton" layoutX="334.0" layoutY="561.0" mnemonicParsing="false" text="Apply" onMouseClicked="#onApplyButtonClicked"/>
+      <Button layoutX="16.0" layoutY="561.0" mnemonicParsing="false" text="Close" onMouseClicked="#onCloseButtonClicked"/>
    </Pane>
 </AnchorPane>

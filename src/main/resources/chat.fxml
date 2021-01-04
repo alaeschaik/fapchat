@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.viewmodel.ChatController" >
    <Pane layoutY="55.0" prefHeight="345.0" prefWidth="100.0" style="-fx-background-color: b08e1e;">
       <Text fx:id="onlineUserTextArea" layoutX="13.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0"
             text="Online User: X"/>
@@ -35,6 +35,6 @@
       <ImageView fitHeight="55.0" fitWidth="100.0" layoutX="23.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@logo.png"/>
       </ImageView>
-      <Button fx:id="settingsButton" layoutX="527.0" layoutY="15.0" mnemonicParsing="false" text="Settings"/>
+      <Button fx:id="settingsButton" layoutX="527.0" layoutY="15.0" mnemonicParsing="false" text="Settings" onMouseClicked="#onSettingsButtonClicked"/>
    </Pane>
 </AnchorPane>

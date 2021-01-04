@@ -3,7 +3,6 @@ package at.ac.fhcampuswien.chatclient;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -12,6 +11,7 @@ import java.net.UnknownHostException;
 @Data
 @Builder
 public class ChatClient {
+
     private final String hostname;
     private final int port;
     private String username;

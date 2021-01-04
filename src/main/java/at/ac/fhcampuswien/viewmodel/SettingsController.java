@@ -19,6 +19,15 @@ public class SettingsController {
     private ImageView changeAvatarImage;
 
     @FXML
-    private void onAppyButtonClicked (MouseEvent event){
+    private void onApplyButtonClicked (MouseEvent event){
+
+
+    }
+
+    @FXML
+    private void onCloseButtonClicked(MouseEvent event) {
+
+
+
     }
 }

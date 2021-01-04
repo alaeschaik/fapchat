@@ -42,11 +42,12 @@ public class LoginController {
     @FXML
     private void onSettingsButtonClicked(MouseEvent event) {
         Parent root;
+
         try {
             root = FXMLLoader.load(getClass().getResource("/settings.fxml"));
             Stage stage = new Stage();
-            stage.setTitle("My New Stage Title");
-            stage.setScene(new Scene(root, 450, 450));
+            stage.setTitle("Settings");
+            stage.setScene(new Scene(root, 390, 600));
             stage.show();
             // Hide this current window (if this is what you want)
             ((Node) (event.getSource())).getScene().getWindow().hide();
@@ -69,7 +70,7 @@ public class LoginController {
             root = FXMLLoader.load(getClass().getResource("/chat.fxml"));
             Stage stage = new Stage();
             stage.setTitle(String.format("%s - FAPChat", ConnectionManager.client.getUsername()));
-            stage.setScene(new Scene(root, 450, 450));
+            stage.setScene(new Scene(root, 600, 450));
             stage.show();
             // Hide this current window (if this is what you want)
             ((Node) (event.getSource())).getScene().getWindow().hide();
