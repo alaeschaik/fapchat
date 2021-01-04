@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.viewmodel.ChatController" >
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.chatclient.WriteThread" >
    <Pane layoutY="55.0" prefHeight="345.0" prefWidth="100.0" style="-fx-background-color: b08e1e;">
       <Text fx:id="onlineUserTextArea" layoutX="13.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0"
             text="Online User: X"/>
@@ -25,10 +25,10 @@
    </Pane>
    <Pane layoutX="100.0" layoutY="325.0" prefHeight="75.0" prefWidth="500.0" style="-fx-background-color: d5d6f2;">
       <TextField fx:id="messageTextField" layoutX="14.0" layoutY="25.0" prefHeight="25.0" prefWidth="419.0"/>
-      <Button fx:id="sendButton" layoutX="443.0" layoutY="25.0" mnemonicParsing="false" text="Send"/>
+      <Button fx:id="sendButton" layoutX="443.0" layoutY="25.0" mnemonicParsing="false" text="Send" onMouseClicked="#onSendButtonClicked"/>
    </Pane>
    <Pane layoutX="100.0" layoutY="56.0" prefHeight="269.0" prefWidth="500.0">
-      <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="11.0" prefHeight="247.0" prefWidth="472.0"
+      <ScrollPane fx:id="messagePane" hbarPolicy="NEVER" layoutX="14.0" layoutY="11.0" prefHeight="247.0" prefWidth="472.0"
                   vbarPolicy="ALWAYS"/>
    </Pane>
    <Pane prefHeight="55.0" prefWidth="600.0" style="-fx-background-color: d5d6f2;">

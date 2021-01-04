@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class WriteThread extends Thread {
     private PrintWriter writer;
     private final Socket socket;
     private final ChatClient client;
+
 
     public WriteThread(Socket socket, ChatClient client) {
         this.socket = socket;
@@ -25,15 +25,16 @@ public class WriteThread extends Thread {
     }
 
     public void run() {
-
-        /*Scanner scanner = new Scanner(System.in);
+        /*
+        Scanner scanner = new Scanner(System.in);
         writer.println(client.getUsername());
+
 
         String text;
 
         do {
             System.out.print("[" + client.getUsername() + "]: ");
-            text = scanner.next();
+            text = "messages";
             writer.println(text);
 
         } while (!text.equals("bye"));
@@ -43,8 +44,8 @@ public class WriteThread extends Thread {
         } catch (IOException ex) {
 
             System.out.println("Error writing to server: " + ex.getMessage());
-        }*/
-
+        }
+*/
         // TODO: 30/12/2020 Implement logic for chat.fxml 
     }
 }

@@ -20,7 +20,7 @@
       </Text>
       <Text layoutX="14.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avatar:"/>
       <ImageView fx:id="changeAvatarImage" fitHeight="110.0" fitWidth="110.0" layoutX="14.0" layoutY="73.0"
-                 pickOnBounds="true" preserveRatio="true" >
+                 pickOnBounds="true" preserveRatio="true" onMouseClicked="#onAvatarImageClicked" >
          <Image url="@avatar.png"/>
       </ImageView>
       <Text layoutX="14.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maximal size: 110 x 110 px"/>
