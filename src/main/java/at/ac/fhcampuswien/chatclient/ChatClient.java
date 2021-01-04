@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.chatclient;
 
 
+import javafx.scene.image.Image;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,11 +13,14 @@ import java.net.UnknownHostException;
 @Builder
 public class ChatClient {
 
+    private boolean isConnected;
     private final String hostname;
     private final int port;
     private String username;
+    private Image profilePicture;
     private ReadThread readThread;
     private WriteThread writeThread;
+
 
     public void execute() {
         try {
@@ -47,6 +51,8 @@ public class ChatClient {
         ChatClient client = ChatClient.builder()
                                       .hostname(hostname)
                                       .port(port)
+                                      .isConnected(false)
+                                      .profilePicture(new Image(ChatClient.class.getResource("resources/avatar.png").toExternalForm()))
                                       .username(username)
                                       .build();
         client.execute();

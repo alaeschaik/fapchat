@@ -12,11 +12,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.viewmodel.LoginController">
    <top>
-      <AnchorPane prefHeight="125.0" prefWidth="400.0" style="-fx-background-color: b08e1e;"
-                  BorderPane.alignment="CENTER">
-         <ImageView fitHeight="137.0" fitWidth="125.0" layoutX="138.0" layoutY="6.0" pickOnBounds="true"
-                    preserveRatio="true">
-            <Image url="@logo.png"/>
+      <AnchorPane prefHeight="125.0" prefWidth="400.0" style="-fx-background-color: b08e1e;" BorderPane.alignment="CENTER">
+         <ImageView fitHeight="137.0" fitWidth="125.0" layoutX="138.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@logo.png" />
          </ImageView>
       </AnchorPane>
    </top>
@@ -24,52 +22,46 @@
       <AnchorPane prefHeight="496.0" prefWidth="400.0">
          <Label layoutX="89.0" layoutY="175.0" prefHeight="24.0" prefWidth="69.0" text="Username">
             <font>
-               <Font size="15.0"/>
+               <Font size="15.0" />
             </font>
          </Label>
-         <TextField fx:id="usernameTextField" layoutX="165.0" layoutY="174.0" promptText="Username"/>
+         <TextField fx:id="usernameTextField" layoutX="165.0" layoutY="174.0" promptText="Username" />
          <Label layoutX="92.0" layoutY="210.0" prefHeight="24.0" prefWidth="65.0" text="Password">
             <font>
-               <Font size="15.0"/>
+               <Font size="15.0" />
             </font>
          </Label>
          <Label layoutX="140.0" layoutY="269.0" prefHeight="27.0" prefWidth="115.0" text="Server Details">
             <font>
-               <Font size="18.0"/>
+               <Font size="18.0" />
             </font>
          </Label>
-         <ImageView fx:id="avatarImage" fitHeight="125.0" fitWidth="125.0" layoutX="138.0" layoutY="14.0"
-                    pickOnBounds="true" preserveRatio="true">
-            <Image url="@avatar.png"/>
+         <ImageView fx:id="avatarImage" fitHeight="125.0" fitWidth="125.0" layoutX="138.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@avatar.png" />
          </ImageView>
          <Label layoutX="89.0" layoutY="296.0" prefHeight="24.0" prefWidth="69.0" text="Hostname">
             <font>
-               <Font size="15.0"/>
+               <Font size="15.0" />
             </font>
          </Label>
-         <TextField fx:id="hostnameTextField" layoutX="165.0" layoutY="295.0"/>
+         <TextField fx:id="hostnameTextField" layoutX="165.0" layoutY="295.0" />
          <Label layoutX="130.0" layoutY="330.0" prefHeight="24.0" prefWidth="28.0" text="Port">
             <font>
-               <Font size="15.0"/>
+               <Font size="15.0" />
             </font>
          </Label>
-         <TextField fx:id="portTextField" layoutX="165.0" layoutY="329.0"/>
-         <Button fx:id="connectButton" layoutX="307.0" layoutY="407.0" mnemonicParsing="false"
-                 style="-fx-background-color: b08e1e;" text="Connect" textFill="WHITE" onMouseClicked="#onConnectButtonClicked"/>
-         <Button fx:id="settingsButton" layoutX="27.0" layoutY="407.0" mnemonicParsing="false"
-                 style="-fx-background-color: b08e1e;" text="Settings" onMouseClicked="#onSettingsButtonClicked"/>
-         <PasswordField fx:id="enterPasswordField" layoutX="165.0" layoutY="209.0" prefHeight="26.0" prefWidth="143.0"
-                        promptText="Password"/>
-         <Label alignment="CENTER" layoutX="18.0" layoutY="373.0" prefHeight="24.0" prefWidth="365.0"
-                text="Invalid credentials, please try again!" textFill="#eb4d4d">
+         <TextField fx:id="portTextField" layoutX="165.0" layoutY="329.0" />
+         <Button fx:id="connectButton" layoutX="307.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#onConnectButtonClicked" style="-fx-background-color: b08e1e;" text="Connect" textFill="WHITE" />
+         <Button fx:id="settingsButton" layoutX="27.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#onSettingsButtonClicked" style="-fx-background-color: b08e1e;" text="Settings" />
+         <PasswordField fx:id="enterPasswordField" layoutX="165.0" layoutY="209.0" prefHeight="26.0" prefWidth="143.0" promptText="Password" />
+         <Label fx:id="invalidCredentials" alignment="CENTER" layoutX="18.0" layoutY="380.0" prefHeight="24.0" prefWidth="365.0" textFill="#eb4d4d">
             <font>
-               <Font size="15.0"/>
+               <Font size="15.0" />
             </font>
          </Label>
-         <Label alignment="CENTER" layoutX="18.0" layoutY="361.0" prefHeight="24.0" prefWidth="365.0"
-                text="No server found!" textFill="#eb4d4d">
+         <Label fx:id="noServerFound" alignment="CENTER" layoutX="18.0" layoutY="361.0" prefHeight="24.0" prefWidth="365.0" textFill="#eb4d4d">
             <font>
-               <Font size="15.0"/>
+               <Font size="15.0" />
             </font>
          </Label>
       </AnchorPane>

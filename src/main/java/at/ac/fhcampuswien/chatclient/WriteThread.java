@@ -25,6 +25,7 @@ public class WriteThread extends Thread {
     }
 
     public void run() {
+
         /*
         Scanner scanner = new Scanner(System.in);
         writer.println(client.getUsername());

@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -18,30 +19,32 @@ import java.io.IOException;
 
 public class LoginController {
 
+    //muss man natürlich noch Client abhängig wenn machen
+    private static boolean isConnected;
+
+    @FXML
+    private Label noServerFound;
+    @FXML
+    private Label invalidCredentials;
     @FXML
     private PasswordField enterPasswordField;
     @FXML
     private TextField usernameTextField;
-
     @FXML
     private TextField hostnameTextField;
-
     @FXML
     private TextField portTextField;
-
     @FXML
     private Button connectButton;
-
     @FXML
     private Button settingsButton;
-
     @FXML
     private ImageView avatarImage;
-
 
     @FXML
     private void onSettingsButtonClicked(MouseEvent event) {
         Parent root;
+        isConnected = false;
 
         try {
             root = FXMLLoader.load(getClass().getResource("/settings.fxml"));
@@ -58,24 +61,40 @@ public class LoginController {
 
     @FXML
     private void onConnectButtonClicked(MouseEvent event) {
-        ConnectionManager.client = ChatClient.builder()
-                .hostname(hostnameTextField.getText())
-                .port(Integer.parseInt(portTextField.getText()))
-                .username(usernameTextField.getText())
-                .build();
-        ConnectionManager.client.execute();
+        isConnected = true;
+        invalidCredentials.setText("");
+        noServerFound.setText("");
+        if(hostnameTextField.getText().isBlank() || portTextField.getText().isBlank()){
+            noServerFound.setText("No Server found! Please enter a valid Server!");
+            return;
+        }else if(usernameTextField.getText().isBlank()){
+            invalidCredentials.setText("Invalid Credentials! Please enter a username!");
+            return;
+        }else {
+            ConnectionManager.client = ChatClient.builder()
+                    .hostname(hostnameTextField.getText())
+                    .port(Integer.parseInt(portTextField.getText()))
+                    .isConnected(true)
+                    .username(usernameTextField.getText())
+                    .build();
+            ConnectionManager.client.execute();
 
-        Parent root;
-        try {
-            root = FXMLLoader.load(getClass().getResource("/chat.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle(String.format("%s - FAPChat", ConnectionManager.client.getUsername()));
-            stage.setScene(new Scene(root, 600, 450));
-            stage.show();
-            // Hide this current window (if this is what you want)
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-        } catch (IOException e) {
-            e.printStackTrace();
+            Parent root;
+            try {
+                root = FXMLLoader.load(getClass().getResource("/chat.fxml"));
+                Stage stage = new Stage();
+                stage.setTitle(String.format("%s - FAPChat", ConnectionManager.client.getUsername()));
+                stage.setScene(new Scene(root, 600, 450));
+                stage.show();
+
+                // Hide this current window (if this is what you want)
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+    }
+    public static boolean getStatus(){
+        return isConnected;
     }
 }

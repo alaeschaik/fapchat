@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.viewmodel;
 
+import at.ac.fhcampuswien.chatclient.ConnectionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -15,12 +16,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatController {
 
     private static int counter = 0;
-    private HashMap<Integer, String> messageList = new HashMap<>();;
+    private List<String> messageList = new ArrayList<>();;
+
 
     @FXML
     private ScrollPane messagePane;
@@ -68,17 +71,16 @@ public class ChatController {
     }
 
     @FXML
-    private void onSendButtonClicked(MouseEvent event) {
-        counter += 1;
-        //messageList.put("Flow", messageTextField.getText());
-        messageList.put(counter, messageTextField.getText());
+    public void onSendButtonClicked(javafx.event.ActionEvent event) {
         StringBuilder myBuilder = new StringBuilder();
-        //Text messagesField = new Text(messageList.toString());
-        for(Integer key : messageList.keySet()){
-            myBuilder.append(key + ": " +messageList.get(key) + System.lineSeparator());
+        messageList.add(messageTextField.getText());
+        for(String msg  : messageList){
+            myBuilder.append(ConnectionManager.client.getUsername() + ": " + msg + System.lineSeparator());
         }
         Text messagesField = new Text(myBuilder.toString());
         messagePane.setContent(messagesField);
+        messageTextField.clear();
 
     }
+
 }
