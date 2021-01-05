@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.viewmodel;
 
+import at.ac.fhcampuswien.chatclient.ChatClient;
 import at.ac.fhcampuswien.chatclient.ConnectionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,14 +76,26 @@ public class ChatController {
 
     @FXML
     public void onSendButtonClicked(javafx.event.ActionEvent event) {
+
+        //DateTimeFormatter formatTimestamp = DateTimeFormatter.ofPattern("HH:mm:ss");
+        //LocalDateTime timestamp = LocalDateTime.now();
+        //String currentTime = formatTimestamp.format(formatTimestamp);
+
+
         StringBuilder myBuilder = new StringBuilder();
         messageList.add(messageTextField.getText());
         for(String msg  : messageList){
             myBuilder.append(ConnectionManager.client.getUsername() + ": " + msg + System.lineSeparator());
         }
         Text messagesField = new Text(myBuilder.toString());
+
+        ConnectionManager.client.sendMessage(messagesField.getText());
+
+
         messagePane.setContent(messagesField);
         messageTextField.clear();
+
+        //toString()
 
     }
 

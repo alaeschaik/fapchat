@@ -50,7 +50,7 @@ public class SettingsController {
     @FXML
     private void onCloseButtonClicked(MouseEvent event) {
         Parent root;
-        if(LoginController.getStatus()){
+
             try {
                 root = FXMLLoader.load(getClass().getResource("/chat.fxml"));
                 Stage stage = new Stage();
@@ -62,19 +62,7 @@ public class SettingsController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
-            try {
-                root = FXMLLoader.load(getClass().getResource("/login.fxml"));
-                Stage stage = new Stage();
-                stage.setTitle("Login");
-                stage.setScene(new Scene(root, 400, 600));
-                stage.show();
-                // Hide this current window (if this is what you want)
-                ((Node) (event.getSource())).getScene().getWindow().hide();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 
 

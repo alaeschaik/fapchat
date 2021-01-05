@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.chatclient;
 
+import at.ac.fhcampuswien.viewmodel.ChatController;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -24,7 +26,25 @@ public class WriteThread extends Thread {
         }
     }
 
+    @Override
     public void run() {
+
+
+        client.getSendText();
+
+        do {
+            System.out.print(client.getSendText());
+            writer.println(ConnectionManager.client.getSendText());
+
+        } while (!ConnectionManager.client.getSendText().equals("bye"));
+
+        try {
+            socket.close();
+        } catch (IOException ex) {
+
+            System.out.println("Error writing to server: " + ex.getMessage());
+
+        }
 
         /*
         Scanner scanner = new Scanner(System.in);

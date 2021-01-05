@@ -13,13 +13,13 @@ import java.net.UnknownHostException;
 @Builder
 public class ChatClient {
 
-    private boolean isConnected;
     private final String hostname;
     private final int port;
     private String username;
     private Image profilePicture;
     private ReadThread readThread;
     private WriteThread writeThread;
+    private String sendText;
 
 
     public void execute() {
@@ -51,7 +51,6 @@ public class ChatClient {
         ChatClient client = ChatClient.builder()
                                       .hostname(hostname)
                                       .port(port)
-                                      .isConnected(false)
                                       .profilePicture(new Image(ChatClient.class.getResource("resources/avatar.png").toExternalForm()))
                                       .username(username)
                                       .build();
@@ -60,5 +59,17 @@ public class ChatClient {
 
     //public void sendMessage(String Text)
     //viewmodell chatcontroller nur schnittstelle zwischen view(chat.fxml) und modell(chatclient mit write und read)
+
+    public void sendMessage(String Text){
+
+        sendText = Text;
+
+
+
+        writeThread.run();
+        readThread.run();
+
+
+    }
 
 }

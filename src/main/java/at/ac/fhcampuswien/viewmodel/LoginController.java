@@ -19,9 +19,6 @@ import java.io.IOException;
 
 public class LoginController {
 
-    //muss man natürlich noch Client abhängig wenn machen
-    private static boolean isConnected;
-
     @FXML
     private Label noServerFound;
     @FXML
@@ -44,7 +41,6 @@ public class LoginController {
     @FXML
     private void onSettingsButtonClicked(MouseEvent event) {
         Parent root;
-        isConnected = false;
 
         try {
             root = FXMLLoader.load(getClass().getResource("/settings.fxml"));
@@ -61,7 +57,6 @@ public class LoginController {
 
     @FXML
     private void onConnectButtonClicked(MouseEvent event) {
-        isConnected = true;
         invalidCredentials.setText("");
         noServerFound.setText("");
         if(hostnameTextField.getText().isBlank() || portTextField.getText().isBlank()){
@@ -74,7 +69,6 @@ public class LoginController {
             ConnectionManager.client = ChatClient.builder()
                     .hostname(hostnameTextField.getText())
                     .port(Integer.parseInt(portTextField.getText()))
-                    .isConnected(true)
                     .username(usernameTextField.getText())
                     .build();
             ConnectionManager.client.execute();
@@ -94,7 +88,5 @@ public class LoginController {
             }
         }
     }
-    public static boolean getStatus(){
-        return isConnected;
-    }
+
 }
