@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -26,11 +25,6 @@
             </font>
          </Label>
          <TextField fx:id="usernameTextField" layoutX="165.0" layoutY="174.0" promptText="Username" />
-         <Label layoutX="92.0" layoutY="210.0" prefHeight="24.0" prefWidth="65.0" text="Password">
-            <font>
-               <Font size="15.0" />
-            </font>
-         </Label>
          <Label layoutX="140.0" layoutY="269.0" prefHeight="27.0" prefWidth="115.0" text="Server Details">
             <font>
                <Font size="18.0" />
@@ -52,8 +46,6 @@
          </Label>
          <TextField fx:id="portTextField" layoutX="165.0" layoutY="329.0" />
          <Button fx:id="connectButton" layoutX="307.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#onConnectButtonClicked" style="-fx-background-color: b08e1e;" text="Connect" textFill="WHITE" />
-         <Button fx:id="settingsButton" layoutX="27.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#onSettingsButtonClicked" style="-fx-background-color: b08e1e;" text="Settings" />
-         <PasswordField fx:id="enterPasswordField" layoutX="165.0" layoutY="209.0" prefHeight="26.0" prefWidth="143.0" promptText="Password" />
          <Label fx:id="invalidCredentials" alignment="CENTER" layoutX="18.0" layoutY="380.0" prefHeight="24.0" prefWidth="365.0" textFill="#eb4d4d">
             <font>
                <Font size="15.0" />

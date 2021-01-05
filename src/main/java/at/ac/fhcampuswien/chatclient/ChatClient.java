@@ -57,4 +57,8 @@ public class ChatClient {
                                       .build();
         client.execute();
     }
+
+    //public void sendMessage(String Text)
+    //viewmodell chatcontroller nur schnittstelle zwischen view(chat.fxml) und modell(chatclient mit write und read)
+
 }
