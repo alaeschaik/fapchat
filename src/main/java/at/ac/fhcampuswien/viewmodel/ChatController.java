@@ -99,7 +99,7 @@ public class ChatController {
         String messageField = ConnectionManager.client.getResponseText();
 
         //messagePane.appendText(ConnectionManager.client.getSendText());
-        System.out.print("ChatController: " + messageField);
+        System.out.println("ChatController: " + messageField);
         messageTextField.clear();
 
     }
