@@ -58,14 +58,11 @@ public class ChatClient {
         client.execute();
     }*/
 
-    //public void sendMessage(String Text)
-    //viewmodell chatcontroller nur schnittstelle zwischen view(chat.fxml) und modell(chatclient mit write und read)
+    public void sendMessage(){
 
-    public void sendMessage(String Text){
-
+        //for sender immediately set responseText = sendText, because server does not broadcast back to sender (-->ReadThread)
         responseText = sendText;
         writeThread.run();
-
 
     }
 

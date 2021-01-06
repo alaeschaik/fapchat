@@ -1,13 +1,10 @@
 package at.ac.fhcampuswien.chatclient;
 
-import at.ac.fhcampuswien.viewmodel.ChatController;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.Optional;
 
 public class ReadThread extends Thread {
     private BufferedReader reader;
@@ -24,34 +21,30 @@ public class ReadThread extends Thread {
             System.out.println("Error getting input stream: " + ex.getMessage());
             ex.printStackTrace();
         }
+
     }
     String response;
     public void run() {
+        //reader permanently necessary --> while(true)
         while (true) {
             try {
-                //System.out.println("ReadThread START: " + reader.readLine());
+
                 response = reader.readLine();
 
-                //Optional<String> response = Optional.ofNullable(reader.readLine());
-
+                //check if Message "from" Server or Client and if reader.readLine() null or empty
                 if(!response.contains("[Server]:") && response != null && !response.isEmpty()){
+
+                    //if Message from Client save es ResponseText for ChatClient
                     client.setResponseText(response);
                     System.out.println("ReadThread Client: " + client.getResponseText());
+
                 } else {
-                    //System.out.println("\n" + response);
+
+                    //if Message not from client just Log in console
                     System.out.println("ReadThread Server: " + response);
+
                 }
 
-                //client.setResponseText(response);
-
-
-                //System.out.println("\n" + "ReadThread: "+ response);
-
-
-                // prints the username after displaying the server's message
-                /*if (client.getUsername() != null) {
-                    System.out.print("[" + client.getUsername() + "]: ");
-                }*/
             } catch (IOException ex) {
                 System.out.println("Error reading from server: " + ex.getMessage());
                 ex.printStackTrace();

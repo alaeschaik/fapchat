@@ -10,14 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import static java.util.concurrent.TimeUnit.*;
 
 
 import java.io.IOException;
@@ -25,10 +23,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class ChatController {
@@ -86,33 +82,40 @@ public class ChatController {
     @FXML
     public void onSendButtonClicked(javafx.event.ActionEvent event) {
 
+        //Create and format Timestamp for Message
         DateTimeFormatter formatTimestamp = DateTimeFormatter.ofPattern("HH:mm:ss");
         LocalDateTime timestamp = LocalDateTime.now();
         String currentTime = timestamp.format(formatTimestamp);
 
+        //Build Message with StringBuilder
         StringBuilder myBuilder = new StringBuilder();
         myBuilder.append(currentTime + " " + ConnectionManager.client.getUsername() + ": " + messageTextField.getText());
 
+        //Set client.SendText and call client.sendMessage()
         ConnectionManager.client.setSendText(myBuilder.toString());
-        ConnectionManager.client.sendMessage(ConnectionManager.client.getSendText());
+        ConnectionManager.client.sendMessage();
 
+        //Log incoming Messages, always sendText from Sender, testing reasons
         String messageField = ConnectionManager.client.getResponseText();
-
-        //messagePane.appendText(ConnectionManager.client.getSendText());
         System.out.println("ChatController: " + messageField);
+
         messageTextField.clear();
 
     }
 
+    //FXMLLoader will now automatically call any suitably annotated no-arg initialize() method defined by the controller.
+    //To update messagePane and userOnline we need initialize()
     public void initialize(){
 
+        //Executor necessary for repeating updateChat
         ScheduledExecutorService executor =
                 Executors.newSingleThreadScheduledExecutor();
 
-
+        //Runnable updateChat has logic for updating messagePane
         Runnable updateChat = () -> {
+            //Run the specific Runnable (updateChat) of the JavaFX App Thread at some unspecified time in the future.
+            //Can be called from any Thread, will post the Runnable to an event queue and then return immediately to the caller.
             Platform.runLater(()->{
-                //System.out.println("UPDATE");
                 if(ConnectionManager.client.getResponseText() != null && !ConnectionManager.client.getResponseText().contains("[Server]: ") && !ConnectionManager.client.getResponseText().isEmpty()) {
                     messagePane.appendText(ConnectionManager.client.getResponseText() + "\n");
                     ConnectionManager.client.setResponseText(null);
@@ -120,39 +123,9 @@ public class ChatController {
             });
         };
 
+        //Specify time for update with executor
         executor.scheduleAtFixedRate(updateChat, 0, 500, TimeUnit.MILLISECONDS);
 
     }
-
-
-
-
-    //if(ConnectionManager.client.getResponseText() != null && !ConnectionManager.client.getResponseText().contains("[Server]: ") && !ConnectionManager.client.getResponseText().isEmpty())
-
-
-    /*
-    public void updateChat(){
-        final Runnable updater = new Runnable() {
-            @Override
-            public void run() {
-                messagePane.appendText(ConnectionManager.client.getResponseText());
-                System.out.println("UPDATECHAT SUCCESSFULL");
-            }
-        };
-
-        final ScheduledFuture<?> updateChatHandle =
-                scheduler.scheduleAtFixedRate(updater, 10, 10, SECONDS);
-
-        scheduler.schedule(new Runnable() {
-            public void run() { updateChatHandle.cancel(true); }
-        }, 60 * 60, SECONDS);
-    }*/
-
-    /*Platform.runLater(new Runnable() {
-        public void run() {
-            messagePane.appendText(ConnectionManager.client.getResponseText());
-        }
-    });*/
-
 
 }

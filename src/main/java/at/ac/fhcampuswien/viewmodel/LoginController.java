@@ -34,26 +34,9 @@ public class LoginController {
     @FXML
     private Button connectButton;
     @FXML
-    private Button settingsButton;
-    @FXML
     private ImageView avatarImage;
 
-    @FXML
-    private void onSettingsButtonClicked(MouseEvent event) {
-        Parent root;
 
-        try {
-            root = FXMLLoader.load(getClass().getResource("/settings.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Settings");
-            stage.setScene(new Scene(root, 390, 600));
-            stage.show();
-            // Hide this current window (if this is what you want)
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     private void onConnectButtonClicked(MouseEvent event) {

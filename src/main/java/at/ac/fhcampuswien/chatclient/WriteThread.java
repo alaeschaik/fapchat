@@ -1,12 +1,9 @@
 package at.ac.fhcampuswien.chatclient;
 
-import at.ac.fhcampuswien.viewmodel.ChatController;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-
 
 public class WriteThread extends Thread {
     private PrintWriter writer;
@@ -30,30 +27,9 @@ public class WriteThread extends Thread {
     @Override
     public void run() {
 
+        // TODO: 30/12/2020 Implement logic for chat.fxml
+        //Sends String from ChatController, called by ChatClient
         writer.println(client.getSendText());
 
-
-        /*
-        Scanner scanner = new Scanner(System.in);
-        writer.println(client.getUsername());
-
-
-        String text;
-
-        do {
-            System.out.print("[" + client.getUsername() + "]: ");
-            text = "messages";
-            writer.println(text);
-
-        } while (!text.equals("bye"));
-
-        try {
-            socket.close();
-        } catch (IOException ex) {
-
-            System.out.println("Error writing to server: " + ex.getMessage());
-        }
-*/
-        // TODO: 30/12/2020 Implement logic for chat.fxml 
     }
 }
