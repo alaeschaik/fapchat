@@ -42,24 +42,8 @@ public class ChatClient {
 
     }
 
-/*    public static void main(String[] args) {
-        if (args.length < 2) return;
-
-        String hostname = args[0];
-        int port = Integer.parseInt(args[1]);
-        String username = args[2];
-
-        ChatClient client = ChatClient.builder()
-                                      .hostname(hostname)
-                                      .port(port)
-                                      .profilePicture(new Image(ChatClient.class.getResource("resources/avatar.png").toExternalForm()))
-                                      .username(username)
-                                      .build();
-        client.execute();
-    }*/
 
     public void sendMessage(){
-
         //for sender immediately set responseText = sendText, because server does not broadcast back to sender (-->ReadThread)
         responseText = sendText;
         writeThread.run();

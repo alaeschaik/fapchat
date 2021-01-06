@@ -26,7 +26,7 @@
       <Button fx:id="sendButton" defaultButton="true" layoutX="443.0" layoutY="25.0" mnemonicParsing="false" onAction="#onSendButtonClicked" text="Send" />
    </Pane>
    <Pane layoutX="100.0" layoutY="56.0" prefHeight="269.0" prefWidth="500.0">
-      <TextArea fx:id="messagePane" layoutX="14.0" layoutY="11.0" prefHeight="247.0" prefWidth="472.0"  />
+      <TextArea fx:id="messagePane" layoutX="14.0" layoutY="11.0" prefHeight="247.0" prefWidth="472.0" editable="false" />
    </Pane>
    <Pane prefHeight="55.0" prefWidth="600.0" style="-fx-background-color: d5d6f2;">
       <ImageView fitHeight="55.0" fitWidth="100.0" layoutX="23.0" pickOnBounds="true" preserveRatio="true">

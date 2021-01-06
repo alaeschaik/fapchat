@@ -1,12 +1,10 @@
 package at.ac.fhcampuswien.viewmodel;
 
-import at.ac.fhcampuswien.chatclient.ChatClient;
 import at.ac.fhcampuswien.chatclient.ConnectionManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,7 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -62,21 +59,18 @@ public class ChatController {
     private Button settingsButton;
 
     @FXML
-    private void onSettingsButtonClicked(MouseEvent event) {
+    private void onSettingsButtonClicked(MouseEvent event) throws IOException {
         Parent root;
-
         try {
             root = FXMLLoader.load(getClass().getResource("/settings.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Settings");
             stage.setScene(new Scene(root, 390, 600));
             stage.show();
-
-            // Hide this current window (if this is what you want)
-            ((Node) (event.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @FXML

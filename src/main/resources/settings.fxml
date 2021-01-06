@@ -18,14 +18,14 @@
          </font>
       </Text>
       <Text layoutX="14.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avatar:" />
-      <ImageView fx:id="changeAvatarImage" fitHeight="110.0" fitWidth="110.0" layoutX="14.0" layoutY="73.0" onMouseClicked="#onAvatarImageClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="changeAvatarImage" fitHeight="160.0" fitWidth="160.0" layoutX="120.0" layoutY="73.0" onMouseClicked="#onAvatarImageClicked" pickOnBounds="true" preserveRatio="true">
          <Image url="@avatar.png" />
       </ImageView>
-      <Text layoutX="14.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maximal size: 110 x 110 px" />
-      <Text layoutX="14.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
-      <TextField fx:id="changeUsernameTextField" layoutX="84.0" layoutY="219.0" prefHeight="25.0" prefWidth="289.0" />
+      <Text layoutX="130.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maximal size: 160 x 160 px" />
+      <Text layoutX="10.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
+      <TextField fx:id="changeUsernameTextField" layoutX="84.0" layoutY="277.0" prefHeight="25.0" prefWidth="289.0" />
       <Button fx:id="applyButton" defaultButton="true" layoutX="334.0" layoutY="561.0" mnemonicParsing="false" onAction="#onApplyButtonClicked" text="Apply" />
-      <Button layoutX="16.0" layoutY="561.0" mnemonicParsing="false" onMouseClicked="#onCloseButtonClicked" text="Close" />
-      <Label fx:id="settingsStatus" layoutX="84.0" layoutY="270.0" prefHeight="39.0" prefWidth="268.0" />
+      <Button fx:id="closeButton" layoutX="16.0" layoutY="561.0" mnemonicParsing="false" onMouseClicked="#onCloseButtonClicked" text="Close" />
+      <Label fx:id="settingsStatus" layoutX="84.0" layoutY="324.0" prefHeight="39.0" prefWidth="289.0" />
    </Pane>
 </AnchorPane>

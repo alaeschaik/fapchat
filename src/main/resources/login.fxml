@@ -30,7 +30,7 @@
                <Font size="18.0" />
             </font>
          </Label>
-         <ImageView fx:id="avatarImage" fitHeight="125.0" fitWidth="125.0" layoutX="138.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <ImageView fx:id="avatarImage" fitHeight="125.0" fitWidth="125.0" layoutX="138.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#onProfilePictureClicked">
             <Image url="@avatar.png" />
          </ImageView>
          <Label layoutX="89.0" layoutY="296.0" prefHeight="24.0" prefWidth="69.0" text="Hostname">

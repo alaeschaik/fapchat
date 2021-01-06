@@ -3,10 +3,6 @@ package at.ac.fhcampuswien.viewmodel;
 import at.ac.fhcampuswien.chatclient.ConnectionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -15,11 +11,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 
 public class SettingsController {
 
+
+    @FXML
+    private Button closeButton;
 
     @FXML
     private Button applyButton;
@@ -33,9 +30,14 @@ public class SettingsController {
     @FXML
     private Label settingsStatus;
 
+
+    //changes the username if it is not the same and sends a message to all other clients
     @FXML
     private void onApplyButtonClicked (ActionEvent event){
-        if(!changeUsernameTextField.getText().isBlank()){
+        changeAvatarImage.setImage(ConnectionManager.client.getProfilePicture());
+        if(!changeUsernameTextField.getText().isBlank() && !changeUsernameTextField.getText().equals(ConnectionManager.client.getUsername())){
+            ConnectionManager.client.setSendText(ConnectionManager.client.getUsername() +" hat sich gerade in: "+ changeUsernameTextField.getText() + " umbenannt!");
+            ConnectionManager.client.sendMessage();
             ConnectionManager.client.setUsername(changeUsernameTextField.getText());
             settingsStatus.setTextFill(Color.web("#32CD32"));
             settingsStatus.setText("Dein Username wurde erfolgreich geaendert!!");
@@ -49,51 +51,23 @@ public class SettingsController {
 
     @FXML
     private void onCloseButtonClicked(MouseEvent event) {
-        Parent root;
-
-            try {
-                root = FXMLLoader.load(getClass().getResource("/chat.fxml"));
-                Stage stage = new Stage();
-                stage.setTitle(String.format("%s - FAPChat", ConnectionManager.client.getUsername()));
-                stage.setScene(new Scene(root, 600, 450));
-                stage.show();
-                // Hide this current window (if this is what you want)
-                ((Node) (event.getSource())).getScene().getWindow().hide();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        // do what you have to do, bye
+        stage.close();
     }
 
+    //When settings get opened to set the current ProfilePicture as the changeAvatarImage
+    public void initialize() {
+        this.changeAvatarImage.setImage(ConnectionManager.client.getProfilePicture());
+    }
 
+    /*
+    Method to update the ProfilePicture over the Settings Window. Opens the "fileChooser" method from "LoginController" (method is static).
+    Let you choose a Picture from your local machine and set it at new "profilePicture" attribute from the current user!
+     */
     @FXML
     private void onAvatarImageClicked(MouseEvent event) {
-        //changeAvatarImage.setImage(ConnectionManager.client.getProfilePicture());
-        /*
-        Parent root;
-
-        try {
-            root = FXMLLoader.load(getClass().getResource("/settings.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Settings");
-            stage.setScene(new Scene(root, 390, 600));
-            stage.show();
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save Image");
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg"));
-            File selectedFile = fileChooser.showOpenDialog(stage);
-            if (selectedFile != null) {
-                //Image selectedImage = new Image(selectedFile.getAbsolutePath());
-                changeAvatarImage.setImage(new Image(ChatClient.class.getResource("resources/logo.png").toExternalForm()));
-            }
-
-            // Hide this current window (if this is what you want)
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-*/
+        LoginController.fileChooser(changeAvatarImage);
+        ConnectionManager.client.setProfilePicture(changeAvatarImage.getImage());
     }
 }
