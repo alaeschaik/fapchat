@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+
 public class WriteThread extends Thread {
     private PrintWriter writer;
     private final Socket socket;
@@ -29,22 +30,8 @@ public class WriteThread extends Thread {
     @Override
     public void run() {
 
+        writer.println(client.getSendText());
 
-        client.getSendText();
-
-        do {
-            System.out.print(client.getSendText());
-            writer.println(ConnectionManager.client.getSendText());
-
-        } while (!ConnectionManager.client.getSendText().equals("bye"));
-
-        try {
-            socket.close();
-        } catch (IOException ex) {
-
-            System.out.println("Error writing to server: " + ex.getMessage());
-
-        }
 
         /*
         Scanner scanner = new Scanner(System.in);

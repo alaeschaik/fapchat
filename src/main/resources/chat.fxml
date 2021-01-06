@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.TextArea?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.viewmodel.ChatController">
    <Pane layoutY="55.0" prefHeight="345.0" prefWidth="100.0" style="-fx-background-color: b08e1e;">
       <Text fx:id="onlineUserTextArea" layoutX="13.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online User: X" />
@@ -25,7 +26,7 @@
       <Button fx:id="sendButton" defaultButton="true" layoutX="443.0" layoutY="25.0" mnemonicParsing="false" onAction="#onSendButtonClicked" text="Send" />
    </Pane>
    <Pane layoutX="100.0" layoutY="56.0" prefHeight="269.0" prefWidth="500.0">
-      <ScrollPane fx:id="messagePane" hbarPolicy="NEVER" layoutX="14.0" layoutY="11.0" prefHeight="247.0" prefWidth="472.0" vbarPolicy="ALWAYS" />
+      <TextArea fx:id="messagePane" layoutX="14.0" layoutY="11.0" prefHeight="247.0" prefWidth="472.0"  />
    </Pane>
    <Pane prefHeight="55.0" prefWidth="600.0" style="-fx-background-color: d5d6f2;">
       <ImageView fitHeight="55.0" fitWidth="100.0" layoutX="23.0" pickOnBounds="true" preserveRatio="true">

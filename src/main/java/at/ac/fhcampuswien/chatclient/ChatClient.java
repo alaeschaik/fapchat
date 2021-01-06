@@ -20,6 +20,7 @@ public class ChatClient {
     private ReadThread readThread;
     private WriteThread writeThread;
     private String sendText;
+    private String responseText;
 
 
     public void execute() {
@@ -41,7 +42,7 @@ public class ChatClient {
 
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         if (args.length < 2) return;
 
         String hostname = args[0];
@@ -55,19 +56,15 @@ public class ChatClient {
                                       .username(username)
                                       .build();
         client.execute();
-    }
+    }*/
 
     //public void sendMessage(String Text)
     //viewmodell chatcontroller nur schnittstelle zwischen view(chat.fxml) und modell(chatclient mit write und read)
 
     public void sendMessage(String Text){
 
-        sendText = Text;
-
-
-
+        responseText = sendText;
         writeThread.run();
-        readThread.run();
 
 
     }
