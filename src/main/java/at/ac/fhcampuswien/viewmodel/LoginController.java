@@ -48,10 +48,8 @@ public class LoginController {
         noServerFound.setText("");
         if (hostnameTextField.getText().isBlank() || portTextField.getText().isBlank()) {
             noServerFound.setText("No Server found! Please enter a valid Server!");
-            return;
         } else if (usernameTextField.getText().isBlank()) {
             invalidCredentials.setText("Invalid Credentials! Please enter a username!");
-            return;
         } else {
             ConnectionManager.client = ChatClient.builder()
                     .hostname(hostnameTextField.getText())
@@ -80,7 +78,6 @@ public class LoginController {
     @FXML
     public void onProfilePictureClicked(MouseEvent event) throws IOException {
         fileChooser(avatarImage);
-
     }
 
     /*
@@ -94,22 +91,13 @@ public class LoginController {
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg"));
         File file = fileChooser.showOpenDialog(null);
 
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(file);
+        try (FileInputStream fis = new FileInputStream(file)) {
             Image image = new Image(fis);
             imageToChange.setImage(image);
             imageToChange.setFitWidth(160);
             imageToChange.setFitHeight(160);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (fis!=null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {}
-            }
         }
-
     }
 }

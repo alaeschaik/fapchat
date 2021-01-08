@@ -44,7 +44,6 @@ public class SettingsController {
         }else{
             settingsStatus.setTextFill(Color.web("#8B0000"));
             settingsStatus.setText("Dein Username wurde nicht geaendert!");
-            return;
         }
 
     }

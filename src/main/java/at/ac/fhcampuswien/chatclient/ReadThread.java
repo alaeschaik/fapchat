@@ -9,7 +9,6 @@ import java.net.Socket;
 public class ReadThread extends Thread {
     private BufferedReader reader;
     private final ChatClient client;
-    private static int counter = 0;
 
     public ReadThread(Socket socket, ChatClient client) {
         this.client = client;
@@ -32,7 +31,7 @@ public class ReadThread extends Thread {
                 response = reader.readLine();
 
                 //check if Message "from" Server or Client and if reader.readLine() null or empty
-                if(!response.contains("[Server]:") && response != null && !response.isEmpty()){
+                if (!response.contains("[Server]:") && !response.isEmpty()) {
 
                     //if Message from Client save es ResponseText for ChatClient
                     client.setResponseText(response);

@@ -7,12 +7,10 @@ import java.net.Socket;
 
 public class WriteThread extends Thread {
     private PrintWriter writer;
-    private final Socket socket;
     private final ChatClient client;
 
 
     public WriteThread(Socket socket, ChatClient client) {
-        this.socket = socket;
         this.client = client;
 
         try {
