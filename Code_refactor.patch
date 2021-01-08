@@ -1,0 +1,421 @@
+Index: src/main/java/at/ac/fhcampuswien/chatclient/ChatClient.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/chatclient/ChatClient.java b/src/main/java/at/ac/fhcampuswien/chatclient/ChatClient.java
+--- a/src/main/java/at/ac/fhcampuswien/chatclient/ChatClient.java	(revision 622bd4be21397a66dd54837c64cce398c3133602)
++++ b/src/main/java/at/ac/fhcampuswien/chatclient/ChatClient.java	(date 1610065821379)
+@@ -1,6 +1,7 @@
+ package at.ac.fhcampuswien.chatclient;
+ 
+ 
++import at.ac.fhcampuswien.viewmodel.SendMessageCallable;
+ import javafx.scene.image.Image;
+ import lombok.Builder;
+ import lombok.Data;
+@@ -8,6 +9,10 @@
+ import java.io.IOException;
+ import java.net.Socket;
+ import java.net.UnknownHostException;
++import java.util.concurrent.ExecutionException;
++import java.util.concurrent.ExecutorService;
++import java.util.concurrent.Executors;
++import java.util.concurrent.Future;
+ 
+ @Data
+ @Builder
+@@ -17,37 +22,37 @@
+     private final int port;
+     private String username;
+     private Image profilePicture;
+-    private ReadThread readThread;
+-    private WriteThread writeThread;
+-    private String sendText;
+-    private String responseText;
+-
+ 
+     public void execute() {
+         try {
+-            Socket socket = new Socket(hostname, port);
+-
++            ConnectionManager.socket = new Socket(hostname, port);
+             System.out.println("Connected to the chat server");
+-
+-            readThread = new ReadThread(socket, this);
+-            writeThread = new WriteThread(socket, this);
+-            readThread.start();
+-            writeThread.start();
+-
++            // Start Reading for messages
++             ReadThread readThread = new ReadThread(ConnectionManager.socket, this);
++             readThread.start();
+         } catch (UnknownHostException ex) {
+             System.out.println("Server not found: " + ex.getMessage());
+         } catch (IOException ex) {
+             System.out.println("I/O Error: " + ex.getMessage());
+         }
+-
+     }
+ 
+ 
+-    public void sendMessage(){
++    public String sendMessage(String message){
+         //for sender immediately set responseText = sendText, because server does not broadcast back to sender (-->ReadThread)
+-        responseText = sendText;
+-        writeThread.run();
+-
++        ExecutorService executorService = Executors.newSingleThreadExecutor();
++        SendMessageArgs args = SendMessageArgs.builder()
++                .message(message)
++                .chatClient(ConnectionManager.client)
++                .socket(ConnectionManager.socket)
++                .build();
++        Future<SendMessageArgs> result = executorService.submit(new SendMessageCallable((args)));
++        try {
++            return result.get().getMessage();
++        } catch (InterruptedException | ExecutionException e) {
++            e.printStackTrace();
++            return "";
++        }
+     }
+ 
+ }
+\ No newline at end of file
+Index: src/main/java/at/ac/fhcampuswien/chatclient/ReadThread.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/chatclient/ReadThread.java b/src/main/java/at/ac/fhcampuswien/chatclient/ReadThread.java
+--- a/src/main/java/at/ac/fhcampuswien/chatclient/ReadThread.java	(revision 622bd4be21397a66dd54837c64cce398c3133602)
++++ b/src/main/java/at/ac/fhcampuswien/chatclient/ReadThread.java	(date 1610065821384)
+@@ -8,11 +8,10 @@
+ 
+ public class ReadThread extends Thread {
+     private BufferedReader reader;
+-    private final ChatClient client;
+-    private static int counter = 0;
++    private static final int counter = 0;
++    public static String response = "";
+ 
+     public ReadThread(Socket socket, ChatClient client) {
+-        this.client = client;
+ 
+         try {
+             InputStream input = socket.getInputStream();
+@@ -23,7 +22,6 @@
+         }
+ 
+     }
+-    String response;
+     public void run() {
+         //reader permanently necessary --> while(true)
+         while (true) {
+@@ -32,11 +30,10 @@
+                 response = reader.readLine();
+ 
+                 //check if Message "from" Server or Client and if reader.readLine() null or empty
+-                if(!response.contains("[Server]:") && response != null && !response.isEmpty()){
++                if(!response.contains("[Server]:") && !response.isEmpty()){
+ 
+                     //if Message from Client save es ResponseText for ChatClient
+-                    client.setResponseText(response);
+-                    System.out.println("ReadThread Client: " + client.getResponseText());
++                    System.out.println("ReadThread Client: " + response);
+ 
+                 } else {
+ 
+Index: src/main/java/at/ac/fhcampuswien/chatclient/WriteThread.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/chatclient/WriteThread.java b/src/main/java/at/ac/fhcampuswien/chatclient/WriteThread.java
+--- a/src/main/java/at/ac/fhcampuswien/chatclient/WriteThread.java	(revision 622bd4be21397a66dd54837c64cce398c3133602)
++++ b/src/main/java/at/ac/fhcampuswien/chatclient/WriteThread.java	(date 1610062920778)
+@@ -29,7 +29,11 @@
+ 
+         // TODO: 30/12/2020 Implement logic for chat.fxml
+         //Sends String from ChatController, called by ChatClient
+-        writer.println(client.getSendText());
++        //writer.println(client.getSendText());
+ 
++    }
++
++    public void sendMessage(){
++        this.run();
+     }
+ }
+Index: src/main/java/at/ac/fhcampuswien/viewmodel/SendMessageCallable.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/viewmodel/SendMessageCallable.java b/src/main/java/at/ac/fhcampuswien/viewmodel/SendMessageCallable.java
+new file mode 100644
+--- /dev/null	(date 1610064168271)
++++ b/src/main/java/at/ac/fhcampuswien/viewmodel/SendMessageCallable.java	(date 1610064168271)
+@@ -0,0 +1,35 @@
++package at.ac.fhcampuswien.viewmodel;
++
++import at.ac.fhcampuswien.chatclient.ChatClient;
++import at.ac.fhcampuswien.chatclient.SendMessageArgs;
++
++import java.io.IOException;
++import java.io.OutputStream;
++import java.io.PrintWriter;
++import java.util.concurrent.Callable;
++
++public class SendMessageCallable implements Callable<SendMessageArgs> {
++    String messageToSend;
++    ChatClient chatClient;
++    PrintWriter writer;
++
++    public SendMessageCallable(SendMessageArgs args){
++        this.messageToSend = args.getMessage();
++        this.chatClient = args.getChatClient();
++
++        try(OutputStream output = args.getSocket().getOutputStream()) {
++            writer = new PrintWriter(output, true);
++        } catch (IOException ex) {
++            System.out.println("Error getting output stream: " + ex.getMessage());
++            ex.printStackTrace();
++        }
++    }
++    @Override
++    public SendMessageArgs call() throws Exception {
++        writer.println(messageToSend);
++        return SendMessageArgs
++                .builder()
++                .message(messageToSend)
++                .build();
++    }
++}
+Index: src/main/java/at/ac/fhcampuswien/chatclient/SendMessageArgs.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/chatclient/SendMessageArgs.java b/src/main/java/at/ac/fhcampuswien/chatclient/SendMessageArgs.java
+new file mode 100644
+--- /dev/null	(date 1610062497507)
++++ b/src/main/java/at/ac/fhcampuswien/chatclient/SendMessageArgs.java	(date 1610062497507)
+@@ -0,0 +1,18 @@
++package at.ac.fhcampuswien.chatclient;
++
++import lombok.AllArgsConstructor;
++import lombok.Builder;
++import lombok.Data;
++import lombok.NoArgsConstructor;
++
++import java.net.Socket;
++
++@Data
++@AllArgsConstructor
++@NoArgsConstructor
++@Builder
++public class SendMessageArgs {
++    private Socket socket;
++    private ChatClient chatClient;
++    private String message;
++}
+Index: src/main/java/at/ac/fhcampuswien/chatclient/ConnectionManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/chatclient/ConnectionManager.java b/src/main/java/at/ac/fhcampuswien/chatclient/ConnectionManager.java
+--- a/src/main/java/at/ac/fhcampuswien/chatclient/ConnectionManager.java	(revision 622bd4be21397a66dd54837c64cce398c3133602)
++++ b/src/main/java/at/ac/fhcampuswien/chatclient/ConnectionManager.java	(date 1610065036306)
+@@ -1,6 +1,9 @@
+ package at.ac.fhcampuswien.chatclient;
+ 
++import java.net.Socket;
++
+ public class ConnectionManager {
+ 
+     public static ChatClient client;
++    public static Socket socket;
+ }
+Index: src/main/java/at/ac/fhcampuswien/viewmodel/SettingsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/viewmodel/SettingsController.java b/src/main/java/at/ac/fhcampuswien/viewmodel/SettingsController.java
+--- a/src/main/java/at/ac/fhcampuswien/viewmodel/SettingsController.java	(revision 622bd4be21397a66dd54837c64cce398c3133602)
++++ b/src/main/java/at/ac/fhcampuswien/viewmodel/SettingsController.java	(date 1610062920764)
+@@ -36,15 +36,13 @@
+     private void onApplyButtonClicked (ActionEvent event){
+         changeAvatarImage.setImage(ConnectionManager.client.getProfilePicture());
+         if(!changeUsernameTextField.getText().isBlank() && !changeUsernameTextField.getText().equals(ConnectionManager.client.getUsername())){
+-            ConnectionManager.client.setSendText(ConnectionManager.client.getUsername() +" hat sich gerade in: "+ changeUsernameTextField.getText() + " umbenannt!");
+-            ConnectionManager.client.sendMessage();
++            ConnectionManager.client.sendMessage(ConnectionManager.client.getUsername() +" hat sich gerade in: "+ changeUsernameTextField.getText() + " umbenannt!");
+             ConnectionManager.client.setUsername(changeUsernameTextField.getText());
+             settingsStatus.setTextFill(Color.web("#32CD32"));
+             settingsStatus.setText("Dein Username wurde erfolgreich geaendert!!");
+         }else{
+             settingsStatus.setTextFill(Color.web("#8B0000"));
+             settingsStatus.setText("Dein Username wurde nicht geaendert!");
+-            return;
+         }
+ 
+     }
+Index: src/main/java/at/ac/fhcampuswien/viewmodel/LoginController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/viewmodel/LoginController.java b/src/main/java/at/ac/fhcampuswien/viewmodel/LoginController.java
+--- a/src/main/java/at/ac/fhcampuswien/viewmodel/LoginController.java	(revision 622bd4be21397a66dd54837c64cce398c3133602)
++++ b/src/main/java/at/ac/fhcampuswien/viewmodel/LoginController.java	(date 1610060729694)
+@@ -48,10 +48,8 @@
+         noServerFound.setText("");
+         if (hostnameTextField.getText().isBlank() || portTextField.getText().isBlank()) {
+             noServerFound.setText("No Server found! Please enter a valid Server!");
+-            return;
+         } else if (usernameTextField.getText().isBlank()) {
+             invalidCredentials.setText("Invalid Credentials! Please enter a username!");
+-            return;
+         } else {
+             ConnectionManager.client = ChatClient.builder()
+                     .hostname(hostnameTextField.getText())
+@@ -94,21 +92,13 @@
+                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg"));
+         File file = fileChooser.showOpenDialog(null);
+ 
+-        FileInputStream fis = null;
+-        try {
+-            fis = new FileInputStream(file);
++        try (FileInputStream fis = new FileInputStream(file)) {
+             Image image = new Image(fis);
+             imageToChange.setImage(image);
+             imageToChange.setFitWidth(160);
+             imageToChange.setFitHeight(160);
+         } catch (IOException e) {
+             e.printStackTrace();
+-        } finally {
+-            if (fis!=null) {
+-                try {
+-                    fis.close();
+-                } catch (IOException e) {}
+-            }
+         }
+ 
+     }
+Index: src/main/java/at/ac/fhcampuswien/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/Main.java b/src/main/java/at/ac/fhcampuswien/Main.java
+--- a/src/main/java/at/ac/fhcampuswien/Main.java	(revision 622bd4be21397a66dd54837c64cce398c3133602)
++++ b/src/main/java/at/ac/fhcampuswien/Main.java	(date 1610059672204)
+@@ -18,13 +18,6 @@
+         primaryStage.setTitle("FAPChat");
+         primaryStage.setScene(new Scene(root, 400, 600));
+         primaryStage.show();
+-
+-
+-        //TESTVERSUCHE
+-        ScheduledExecutorService executor =
+-                Executors.newSingleThreadScheduledExecutor();
+-
+-
+     }
+ 
+     public static void main(String[] args) {
+Index: src/main/java/at/ac/fhcampuswien/chatclient/ResponseMessageArgs.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/chatclient/ResponseMessageArgs.java b/src/main/java/at/ac/fhcampuswien/chatclient/ResponseMessageArgs.java
+new file mode 100644
+--- /dev/null	(date 1610062497514)
++++ b/src/main/java/at/ac/fhcampuswien/chatclient/ResponseMessageArgs.java	(date 1610062497514)
+@@ -0,0 +1,14 @@
++package at.ac.fhcampuswien.chatclient;
++
++import lombok.AllArgsConstructor;
++import lombok.Builder;
++import lombok.Data;
++import lombok.NoArgsConstructor;
++
++@Data
++@AllArgsConstructor
++@NoArgsConstructor
++@Builder
++public class ResponseMessageArgs {
++    private String response;
++}
+Index: src/main/java/at/ac/fhcampuswien/viewmodel/ChatController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/at/ac/fhcampuswien/viewmodel/ChatController.java b/src/main/java/at/ac/fhcampuswien/viewmodel/ChatController.java
+--- a/src/main/java/at/ac/fhcampuswien/viewmodel/ChatController.java	(revision 622bd4be21397a66dd54837c64cce398c3133602)
++++ b/src/main/java/at/ac/fhcampuswien/viewmodel/ChatController.java	(date 1610065900726)
+@@ -1,6 +1,6 @@
+ package at.ac.fhcampuswien.viewmodel;
+ 
+-import at.ac.fhcampuswien.chatclient.ConnectionManager;
++import at.ac.fhcampuswien.chatclient.*;
+ import javafx.application.Platform;
+ import javafx.fxml.FXML;
+ import javafx.fxml.FXMLLoader;
+@@ -26,8 +26,8 @@
+ 
+ public class ChatController {
+ 
+-    private static int counter = 0;
+-    private List<String> messageList = new ArrayList<>();;
++    private static final int counter = 0;
++    private final List<String> messageList = new ArrayList<>();
+     private final ScheduledExecutorService scheduler =
+             Executors.newScheduledThreadPool(1);
+ 
+@@ -75,22 +75,19 @@
+ 
+     @FXML
+     public void onSendButtonClicked(javafx.event.ActionEvent event) {
++        ChatClient client = ConnectionManager.client;
+ 
+         //Create and format Timestamp for Message
+         DateTimeFormatter formatTimestamp = DateTimeFormatter.ofPattern("HH:mm:ss");
+         LocalDateTime timestamp = LocalDateTime.now();
+         String currentTime = timestamp.format(formatTimestamp);
+ 
+-        //Build Message with StringBuilder
+-        StringBuilder myBuilder = new StringBuilder();
+-        myBuilder.append(currentTime + " " + ConnectionManager.client.getUsername() + ": " + messageTextField.getText());
++        //Format message
++        String messageString = String.format("%s %s: %s", currentTime, client.getUsername(), messageTextField.getText());
+ 
+         //Set client.SendText and call client.sendMessage()
+-        ConnectionManager.client.setSendText(myBuilder.toString());
+-        ConnectionManager.client.sendMessage();
+-
+         //Log incoming Messages, always sendText from Sender, testing reasons
+-        String messageField = ConnectionManager.client.getResponseText();
++        String messageField = client.sendMessage(messageString);
+         System.out.println("ChatController: " + messageField);
+ 
+         messageTextField.clear();
+@@ -110,9 +107,10 @@
+             //Run the specific Runnable (updateChat) of the JavaFX App Thread at some unspecified time in the future.
+             //Can be called from any Thread, will post the Runnable to an event queue and then return immediately to the caller.
+             Platform.runLater(()->{
+-                if(ConnectionManager.client.getResponseText() != null && !ConnectionManager.client.getResponseText().contains("[Server]: ") && !ConnectionManager.client.getResponseText().isEmpty()) {
+-                    messagePane.appendText(ConnectionManager.client.getResponseText() + "\n");
+-                    ConnectionManager.client.setResponseText(null);
++                String response = ReadThread.response;
++                if(response != null && !response.contains("[Server]: ") && !response.isEmpty()) {
++                    messagePane.appendText(response + "\n");
++                    ReadThread.response = null;
+                 }
+             });
+         };

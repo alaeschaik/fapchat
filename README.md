@@ -9,7 +9,7 @@ If you run on Linux or Mac, follow these steps:
 
     cd fapchat
     
-To run the project:
+To run the project (you might have to grant execution rights to gradlew):
     
     ./gradlew run
 
