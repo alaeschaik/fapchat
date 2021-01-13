@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.viewmodel;
 
 import at.ac.fhcampuswien.chatclient.ChatClient;
 import at.ac.fhcampuswien.chatclient.ConnectionManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -43,7 +44,7 @@ public class LoginController {
     private ImageView avatarImage;
 
     @FXML
-    private void onConnectButtonClicked(MouseEvent event) {
+    private void onConnectExecuted(ActionEvent event) {
         invalidCredentials.setText("");
         noServerFound.setText("");
         if (hostnameTextField.getText().isBlank() || portTextField.getText().isBlank()) {
@@ -63,7 +64,7 @@ public class LoginController {
                 root = FXMLLoader.load(getClass().getResource("/chat.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle(String.format("%s - FAPChat", ConnectionManager.client.getUsername()));
-                stage.setScene(new Scene(root, 600, 450));
+                stage.setScene(new Scene(root, 600, 400));
                 stage.show();
 
                 // Hide this current window (if this is what you want)
