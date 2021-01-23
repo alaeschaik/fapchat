@@ -63,7 +63,7 @@ public class LoginController {
             try {
                 root = FXMLLoader.load(getClass().getResource("/chat.fxml"));
                 Stage stage = new Stage();
-                stage.setTitle(String.format("%s - FAPChat", ConnectionManager.client.getUsername()));
+                stage.setTitle("FapChat");
                 stage.setScene(new Scene(root, 600, 400));
                 stage.show();
 

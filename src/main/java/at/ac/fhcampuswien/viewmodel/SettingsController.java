@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 
 public class SettingsController {
 
-
     @FXML
     private Button closeButton;
 
@@ -45,7 +44,6 @@ public class SettingsController {
             settingsStatus.setTextFill(Color.web("#8B0000"));
             settingsStatus.setText("Dein Username wurde nicht geaendert!");
         }
-
     }
 
     @FXML
