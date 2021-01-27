@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -60,6 +61,9 @@ public class ChatController {
     private Button settingsButton;
 
     @FXML
+    private Button disconnectButton;
+
+    @FXML
     private void onSettingsButtonClicked(MouseEvent event) throws IOException {
         Parent root;
         try {
@@ -97,6 +101,28 @@ public class ChatController {
         messageTextField.clear();
     }
 
+    @FXML
+    public void onDisconnectButtonClicked(MouseEvent event) throws IOException {
+
+        ConnectionManager.client.setSendText("bye");
+        ConnectionManager.client.sendMessage();
+
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/login.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle(String.format("Login - FAPChat"));
+            stage.setScene(new Scene(root, 400, 600));
+            stage.show();
+
+            // Hide this current window (if this is what you want)
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     //FXMLLoader will now automatically call any suitably annotated no-arg initialize() method defined by the controller.
     //To update messagePane and userOnline we need initialize()
     public void initialize() {
@@ -117,8 +143,18 @@ public class ChatController {
             });
         };
 
+        //Updates OnlineUserStats
+        Runnable updateUserOnline = () -> {
+            Platform.runLater(()->{
+                ConnectionManager.client.statusUpdate();
+                onlineUserTextArea.setText("Online User: " + ConnectionManager.client.getUserCounter());
+                System.out.println("UPDATE");
+            });
+        };
+
         //Specify time for update with executor
         executor.scheduleAtFixedRate(updateChat, 0, 500, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(updateUserOnline, 0, 2000, TimeUnit.MILLISECONDS);
 
     }
 

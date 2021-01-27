@@ -21,6 +21,7 @@ public class ChatClient {
     private WriteThread writeThread;
     private String sendText;
     private String responseText;
+    private int userCounter;
 
 
     public void execute() {
@@ -47,6 +48,18 @@ public class ChatClient {
         //for sender immediately set responseText = sendText, because server does not broadcast back to sender (-->ReadThread)
         responseText = sendText;
         writeThread.run();
+
+    }
+
+    //updates onlineUser and onlineUserList
+    public void statusUpdate(){
+        writeThread.run();
+    }
+
+    public void end(){
+
+        readThread.interrupt();
+        writeThread.interrupt();
 
     }
 
