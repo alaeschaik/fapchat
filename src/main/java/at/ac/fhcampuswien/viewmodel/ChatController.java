@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -66,6 +67,8 @@ public class ChatController {
             Stage stage = new Stage();
             stage.setTitle("Settings");
             stage.setScene(new Scene(root, 390, 600));
+            stage.initOwner(settingsButton.getScene().getWindow());
+            stage.initModality(Modality.WINDOW_MODAL);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
