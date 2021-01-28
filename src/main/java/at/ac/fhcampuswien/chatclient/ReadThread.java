@@ -36,10 +36,7 @@ public class ReadThread extends Thread {
                 }
 
                 //check if Message "from" Server or Client and if reader.readLine() null or empty
-                if(!response.startsWith("LIST_ONLINE: ")
-                        && !response.startsWith("USER_ONLINE: ")
-                        && !response.startsWith("[Server]:")
-                        && response != null && !response.isEmpty()){
+                if(!response.startsWith("LIST_ONLINE: ") && !response.startsWith("USER_ONLINE: ") && !response.startsWith("[Server]:") && !response.isEmpty()){
 
                     //if Message from Client save es ResponseText for ChatClient
                     client.setResponseText(response);

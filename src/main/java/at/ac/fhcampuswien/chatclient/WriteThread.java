@@ -27,7 +27,7 @@ public class WriteThread extends Thread {
 
         //Sends String from ChatController, called by ChatClient
 
-        if(client.getSendText() != null || client.getUsername() == client.getSendText()) {
+        if(client.getSendText() != null || client.getUsername().equals(client.getSendText())) {
             writer.println(client.getSendText());
             client.setSendText(null);
         } else {

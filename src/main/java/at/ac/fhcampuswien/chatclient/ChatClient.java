@@ -48,13 +48,12 @@ public class ChatClient {
         } catch (IOException ex) {
             System.out.println("I/O Error: " + ex.getMessage());
         }
-
     }
 
 
     public void sendMessage(){
         //for sender immediately set responseText = sendText, because server does not broadcast back to sender (-->ReadThread)
-        if(sendText != username && !sendText.startsWith(getUsername()))
+        if(!sendText.equals(username) && !sendText.startsWith(getUsername()))
             responseText = sendText;
         writeThread.run();
 
