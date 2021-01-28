@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.viewmodel;
 import at.ac.fhcampuswien.chatclient.ChatClient;
 import at.ac.fhcampuswien.chatclient.ConnectionManager;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,6 +69,13 @@ public class LoginController {
                 stage.setTitle("FapChat");
                 stage.setScene(new Scene(root, 600, 400));
                 stage.show();
+                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        ConnectionManager.client.setSendText("bye");
+                        ConnectionManager.client.sendMessage();
+                        stage.close();
+                    }
+                });
 
                 // Hide this current window (if this is what you want)
                 ((Node) (event.getSource())).getScene().getWindow().hide();
