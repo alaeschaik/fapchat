@@ -77,7 +77,6 @@ public class ChatController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML

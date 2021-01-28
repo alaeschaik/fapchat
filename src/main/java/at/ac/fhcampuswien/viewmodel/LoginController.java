@@ -47,20 +47,21 @@ public class LoginController {
     private void onConnectExecuted(ActionEvent event) {
         invalidCredentials.setText("");
         noServerFound.setText("");
-        if (hostnameTextField.getText().isBlank() || portTextField.getText().isBlank()) {
-            noServerFound.setText("No Server found! Please enter a valid Server!");
-        } else if (usernameTextField.getText().isBlank()) {
-            invalidCredentials.setText("Invalid Credentials! Please enter a username!");
-        } else {
-            ConnectionManager.client = ChatClient.builder()
-                    .hostname(hostnameTextField.getText())
-                    .port(Integer.parseInt(portTextField.getText()))
-                    .username(usernameTextField.getText())
-                    .profilePicture(avatarImage.getImage())
-                    .build();
-            ConnectionManager.client.execute();
-            Parent root;
-            try {
+        try {
+            if (hostnameTextField.getText().isBlank() || portTextField.getText().isBlank()) {
+                noServerFound.setText("No Server found! Please enter a valid Server!");
+            } else if (usernameTextField.getText().isBlank()) {
+                invalidCredentials.setText("Invalid Credentials! Please enter a username!");
+            } else {
+                ConnectionManager.client = ChatClient.builder()
+                        .hostname(hostnameTextField.getText())
+                        .port(Integer.parseInt(portTextField.getText()))
+                        .username(usernameTextField.getText())
+                        .profilePicture(avatarImage.getImage())
+                        .build();
+                ConnectionManager.client.execute();
+                Parent root;
+
                 root = FXMLLoader.load(getClass().getResource("/chat.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle("FapChat");
@@ -69,11 +70,13 @@ public class LoginController {
 
                 // Hide this current window (if this is what you want)
                 ((Node) (event.getSource())).getScene().getWindow().hide();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+            invalidCredentials.setText("The port must consist of numbers!");
         }
-
     }
 
     @FXML
@@ -85,7 +88,7 @@ public class LoginController {
      Static method so we can call it in other classes. Method creates a fileChooser and let the user choose a File (.png or .jpg)
     from his local machine and set's it for the current clients "profilePicture" variable
      */
-    public static void fileChooser(ImageView imageToChange){
+    public static void fileChooser(ImageView imageToChange) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save ProfilePicture");
         fileChooser.getExtensionFilters().addAll(

@@ -35,7 +35,7 @@ public class SettingsController {
     private void onApplyButtonClicked (ActionEvent event){
         changeAvatarImage.setImage(ConnectionManager.client.getProfilePicture());
         if(!changeUsernameTextField.getText().isBlank() && !changeUsernameTextField.getText().equals(ConnectionManager.client.getUsername())){
-            ConnectionManager.client.setSendText(ConnectionManager.client.getUsername() +" hat sich gerade in: "+ changeUsernameTextField.getText() + " umbenannt!");
+            ConnectionManager.client.setSendText(ConnectionManager.client.getUsername() +" hat sich gerade in "+ changeUsernameTextField.getText() + " umbenannt!");
             ConnectionManager.client.sendMessage();
             ConnectionManager.client.setUsername(changeUsernameTextField.getText());
             settingsStatus.setTextFill(Color.web("#32CD32"));

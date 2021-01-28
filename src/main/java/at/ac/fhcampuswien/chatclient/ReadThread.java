@@ -22,7 +22,9 @@ public class ReadThread extends Thread {
         }
 
     }
+
     String response;
+
     public void run() {
         //reader permanently necessary --> while(true)
         boolean exit = false;
@@ -31,19 +33,19 @@ public class ReadThread extends Thread {
 
                 response = reader.readLine();
 
-                if(response.equals("byebye")) {
+                if (response.equals("byebye")) {
                     System.out.println("Disconnected");
                     exit = true;
                 }
 
                 //check if Message "from" Server or Client and if reader.readLine() null or empty
-                if(!response.contains("USER_ONLINE: ") && !response.contains("[Server]:") && response != null && !response.isEmpty()){
+                if (!response.contains("USER_ONLINE: ") && !response.contains("[Server]:") && response != null && !response.isEmpty()) {
 
                     //if Message from Client save es ResponseText for ChatClient
                     client.setResponseText(response);
                     System.out.println("ReadThread Client: " + client.getResponseText());
 
-                } else if(response.contains("USER_ONLINE: ")){
+                } else if (response.contains("USER_ONLINE: ")) {
 
                     client.setUserCounter(Character.getNumericValue(response.charAt(13)));
                     //System.out.println("ReadThread Server: " + response);
@@ -61,6 +63,5 @@ public class ReadThread extends Thread {
                 break;
             }
         }
-
     }
 }
