@@ -25,7 +25,6 @@ public class WriteThread extends Thread {
     @Override
     public void run() {
 
-        // TODO: 30/12/2020 Implement logic for chat.fxml
         //Sends String from ChatController, called by ChatClient
 
         if(client.getSendText() != null || client.getUsername() == client.getSendText()) {
