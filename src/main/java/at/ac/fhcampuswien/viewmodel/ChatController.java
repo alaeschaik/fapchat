@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.viewmodel;
 import at.ac.fhcampuswien.chatclient.ChatClient;
 import at.ac.fhcampuswien.chatclient.ConnectionManager;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -17,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -32,6 +34,7 @@ public class ChatController {
     private final List<String> messageList = new ArrayList<>();
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
+    private boolean isLoggedIn = false;
 
     @FXML
     private TextArea messagePane;
@@ -105,6 +108,7 @@ public class ChatController {
 
         ConnectionManager.client.setSendText("bye");
         ConnectionManager.client.sendMessage();
+        isLoggedIn = false;
 
         Parent root;
         try {
@@ -112,7 +116,14 @@ public class ChatController {
             Stage stage = new Stage();
             stage.setTitle(String.format("Login - FAPChat"));
             stage.setScene(new Scene(root, 400, 600));
+            stage.setResizable(false);
             stage.show();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    stage.close();
+                    System.exit(0);
+                }
+            });
 
             // Hide this current window (if this is what you want)
             ((Node) (event.getSource())).getScene().getWindow().hide();
@@ -126,6 +137,8 @@ public class ChatController {
     //To update messagePane and userOnline we need initialize()
     public void initialize() {
 
+        isLoggedIn = true;
+
         //Executor necessary for repeating updateChat
         ScheduledExecutorService executor =
                 Executors.newSingleThreadScheduledExecutor();
@@ -135,9 +148,11 @@ public class ChatController {
             //Run the specific Runnable (updateChat) of the JavaFX App Thread at some unspecified time in the future.
             //Can be called from any Thread, will post the Runnable to an event queue and then return immediately to the caller.
             Platform.runLater(() -> {
-                if(ConnectionManager.client.getResponseText() != null && !ConnectionManager.client.getResponseText().contains("[Server]: ") && !ConnectionManager.client.getResponseText().isEmpty()) {
-                    messagePane.appendText(ConnectionManager.client.getResponseText() + "\n");
-                    ConnectionManager.client.setResponseText(null);
+                if(isLoggedIn) {
+                    if (ConnectionManager.client.getResponseText() != null && !ConnectionManager.client.getResponseText().contains("[Server]: ") && !ConnectionManager.client.getResponseText().isEmpty()) {
+                        messagePane.appendText(ConnectionManager.client.getResponseText() + "\n");
+                        ConnectionManager.client.setResponseText(null);
+                    }
                 }
             });
         };
@@ -145,10 +160,12 @@ public class ChatController {
         //Updates OnlineUserStats
         Runnable updateUserOnline = () -> {
             Platform.runLater(()->{
-                ConnectionManager.client.statusUpdate();
-                onlineUserTextArea.setText("Online User: " + ConnectionManager.client.getUserCounter());
-                online1.setText(ConnectionManager.client.getOnlineUser());
-                //System.out.println("UPDATE");
+                if(isLoggedIn) {
+                    ConnectionManager.client.statusUpdate();
+                    onlineUserTextArea.setText("Online User: " + ConnectionManager.client.getUserCounter());
+                    online1.setText(ConnectionManager.client.getOnlineUser());
+                    //System.out.println("UPDATE");
+                }
             });
         };
 

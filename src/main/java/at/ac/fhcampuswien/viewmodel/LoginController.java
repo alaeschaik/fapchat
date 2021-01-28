@@ -68,12 +68,13 @@ public class LoginController {
                 Stage stage = new Stage();
                 stage.setTitle("FapChat");
                 stage.setScene(new Scene(root, 600, 400));
+                stage.setResizable(false);
                 stage.show();
                 stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                     public void handle(WindowEvent we) {
                         ConnectionManager.client.setSendText("bye");
                         ConnectionManager.client.sendMessage();
-                        stage.close();
+                        System.exit(0);
                     }
                 });
 
@@ -97,6 +98,7 @@ public class LoginController {
      Static method so we can call it in other classes. Method creates a fileChooser and let the user choose a File (.png or .jpg)
     from his local machine and set's it for the current clients "profilePicture" variable
      */
+
     public static void fileChooser(ImageView imageToChange) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save ProfilePicture");
