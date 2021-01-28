@@ -27,12 +27,15 @@ public class WriteThread extends Thread {
 
         // TODO: 30/12/2020 Implement logic for chat.fxml
         //Sends String from ChatController, called by ChatClient
-        writer.println("statusUpdateRequest");
 
-        if(client.getSendText() != null) {
+        if(client.getSendText() != null || client.getUsername() == client.getSendText()) {
             writer.println(client.getSendText());
             client.setSendText(null);
+        } else {
+            writer.println("statusUpdateRequest");
         }
 
     }
+
+
 }

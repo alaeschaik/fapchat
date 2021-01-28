@@ -11,6 +11,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.sql.ConnectionBuilder;
+
 
 public class SettingsController {
 
@@ -36,6 +38,8 @@ public class SettingsController {
         changeAvatarImage.setImage(ConnectionManager.client.getProfilePicture());
         if(!changeUsernameTextField.getText().isBlank() && !changeUsernameTextField.getText().equals(ConnectionManager.client.getUsername())){
             ConnectionManager.client.setSendText(ConnectionManager.client.getUsername() +" hat sich gerade in: "+ changeUsernameTextField.getText() + " umbenannt!");
+            ConnectionManager.client.sendMessage();
+            ConnectionManager.client.setSendText(ConnectionManager.client.getUsername() + "CHANGEUSERNAME" + changeUsernameTextField.getText());
             ConnectionManager.client.sendMessage();
             ConnectionManager.client.setUsername(changeUsernameTextField.getText());
             settingsStatus.setTextFill(Color.web("#32CD32"));

@@ -22,6 +22,7 @@ public class ChatClient {
     private String sendText;
     private String responseText;
     private int userCounter;
+    private String onlineUser;
 
 
     public void execute() {
@@ -35,6 +36,13 @@ public class ChatClient {
             readThread.start();
             writeThread.start();
 
+            //sends username after executing
+            sendText = username;
+            writeThread.run();
+
+            //sends avatarImage after executing
+
+
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());
         } catch (IOException ex) {
@@ -46,7 +54,8 @@ public class ChatClient {
 
     public void sendMessage(){
         //for sender immediately set responseText = sendText, because server does not broadcast back to sender (-->ReadThread)
-        responseText = sendText;
+        if(sendText != username && !sendText.startsWith(getUsername()))
+            responseText = sendText;
         writeThread.run();
 
     }

@@ -148,7 +148,8 @@ public class ChatController {
             Platform.runLater(()->{
                 ConnectionManager.client.statusUpdate();
                 onlineUserTextArea.setText("Online User: " + ConnectionManager.client.getUserCounter());
-                System.out.println("UPDATE");
+                online1.setText(ConnectionManager.client.getOnlineUser());
+                //System.out.println("UPDATE");
             });
         };
 

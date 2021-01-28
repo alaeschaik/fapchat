@@ -24,7 +24,6 @@ public class ReadThread extends Thread {
     }
     String response;
     public void run() {
-        //reader permanently necessary --> while(true)
         boolean exit = false;
         while (!exit) {
             try {
@@ -37,22 +36,29 @@ public class ReadThread extends Thread {
                 }
 
                 //check if Message "from" Server or Client and if reader.readLine() null or empty
-                if(!response.contains("USER_ONLINE: ") && !response.contains("[Server]:") && response != null && !response.isEmpty()){
+                if(!response.startsWith("LIST_ONLINE: ")
+                        && !response.startsWith("USER_ONLINE: ")
+                        && !response.startsWith("[Server]:")
+                        && response != null && !response.isEmpty()){
 
                     //if Message from Client save es ResponseText for ChatClient
                     client.setResponseText(response);
                     System.out.println("ReadThread Client: " + client.getResponseText());
 
-                } else if(response.contains("USER_ONLINE: ")){
+                } else if(response.startsWith("USER_ONLINE: ")){
 
                     client.setUserCounter(Character.getNumericValue(response.charAt(13)));
                     //System.out.println("ReadThread Server: " + response);
 
-                } else {
+                } else if(response.startsWith("LIST_ONLINE: ")) {
 
+                    client.setOnlineUser(response.replace("LIST_ONLINE: ", "")
+                            .substring(1, response.length() - 14)
+                            .replace(", ", "\n"));
+
+                } else {
                     //if Message not from client just Log in console
                     System.out.println("ReadThread Server: " + response);
-
                 }
 
             } catch (IOException ex) {
