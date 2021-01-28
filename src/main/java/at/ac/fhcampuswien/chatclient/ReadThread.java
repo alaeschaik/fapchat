@@ -43,12 +43,10 @@ public class ReadThread extends Thread {
 
                     //if Message from Client save es ResponseText for ChatClient
                     client.setResponseText(response);
-                    System.out.println("ReadThread Client: " + client.getResponseText());
 
                 } else if(response.startsWith("USER_ONLINE: ")){
 
                     client.setUserCounter(Character.getNumericValue(response.charAt(13)));
-                    //System.out.println("ReadThread Server: " + response);
 
                 } else if(response.startsWith("LIST_ONLINE: ")) {
 
